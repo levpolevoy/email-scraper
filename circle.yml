@@ -1,6 +1,6 @@
 dependencies:
   pre:
-    - sudo pip install -r requirements.txt
+    - pip install -r requirements.txt
 test:
   override:
     - ./test.sh
