@@ -63,6 +63,10 @@ In another shell session, run:
 ./test.sh
 ```
 
+### Continous integration
+
+See [here](https://circleci.com/gh/levpolevoy/email-scraper).
+
 ## Design
 
 All of the difficult crawling tasks are deferred to
