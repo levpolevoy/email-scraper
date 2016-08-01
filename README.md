@@ -11,7 +11,7 @@ It's an exercise from a job interview.
 **Clone:**
 
 ```
-git clone URL
+git clone git@github.com:levpolevoy/email-scraper.git
 ```
 
 **Start a virtualenv (optional):**
