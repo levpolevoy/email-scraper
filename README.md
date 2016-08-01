@@ -57,7 +57,7 @@ In another shell session, run:
 ./find_emails.sh localhost:8000
 ```
 
-### Unit testing
+### Unit tests
 
 ```
 ./test.sh
@@ -79,15 +79,14 @@ Scrapy crawlers can be organized in one of two ways:
 - A project with files with certain naming conventions (similar to Django).
 - A single file or any other custom structure.
 
-This is a simple exercise so I thought that it would be easier
-to use the single file method (find_emails.py).
+This is a simple exercise so I decided to just do it in one file (find_emails.py).
 
 ## Tasks
 
 - [X] Crawl one page and extract email addresses from it.
 - [X] Crawl all of the discoverable pages.
 - [X] Limit crawling to one domain.
-- [X] Deduplicate the discovered email addresses (see pipelines.py).
+- [X] Deduplicate the discovered email addresses.
 - [ ] Print emails as soon as they are found (instead of waiting until processing is over).
 
 ## Alternative solutions
@@ -95,8 +94,8 @@ to use the single file method (find_emails.py).
 ### Implement the core crawling manually
 
 The exercise is not complicated, so I could have implemented it
-without using a framework like scrapy, but using it made things
-easier and in addition I got to learn a little bit about scrapy.
+without using a framework like scrapy, but using scrapy made things
+easier and in addition I got to learn a bit about scrapy.
 
 Had I implemented in a more manual manner it would have looked like this:
 
@@ -136,18 +135,19 @@ Found via keyword search: *contact scraping*
 
 ### No javascript rendering
 
-In the modern web content is often available only after JS was executed.
+In the modern web content is often only available after JS was executed.
 
-Such content includes:
+With regards to this specific script, such content includes:
 - Email addresses
-- Links to pages
+- Links to other pages
 
 This script doesn't do any complex pre-processing for a page before
-parsing email addresses out of it. It only performs an HTTP GET and
- then parses the body of the response.
+parsing email addresses or links out of it. It only performs an HTTP GET and
+then parses the body of the response.
 
 Executing javascript is orders of magnitude more complex in terms
 of engineering effort, resource requirements and security.
 
 If it's crucial, the [scrapy-splash](https://github.com/scrapy-plugins/scrapy-splash)
 project can be helpful.
+
