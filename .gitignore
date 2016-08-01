@@ -91,3 +91,5 @@ ENV/
 # Downloaded reports
 emails*.csv
 
+# temp vim files
+*.swp
