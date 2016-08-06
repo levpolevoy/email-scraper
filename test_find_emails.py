@@ -2,6 +2,7 @@ import unittest
 from find_emails import DuplicatesPipeline, EmailAddressesSpider
 from scrapy.exceptions import DropItem
 from scrapy.http import TextResponse
+from scrapy_splash import SplashRequest
 
 
 class TestDuplicatesPipeline(unittest.TestCase):
@@ -28,9 +29,12 @@ class TestEmailAddressesSpider(unittest.TestCase):
     def test_must_set_a_domain(self):
         self.assertRaises(ValueError, EmailAddressesSpider)
 
-    def test_sets_start_urls_based_on_the_domain_param(self):
-        s = EmailAddressesSpider('google.com')
-        self.assertEqual(['http://google.com'], s.start_urls)
+    def test_start_requests_should_return_a_splash_req_to_the_main_page(self):
+        s = EmailAddressesSpider('google.com:80')
+        start_requests = s.start_requests()
+        self.assertEqual(len(start_requests), 1)
+        self.assertEqual(type(start_requests[0]), SplashRequest)
+        self.assertEqual(start_requests[0].url, 'http://google.com:80')
 
     def test_sets_allowed_domains_based_on_the_domain_param(self):
         s = EmailAddressesSpider('google.com')

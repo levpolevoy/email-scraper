@@ -4,37 +4,46 @@ A script that prints all of the emails found in a crawl of all of the pages in a
 
 ## Background
 
-It's an exercise from a job interview.
+This is the solution for an exercise that was given to me as part of a job interview.
 
 ## Installation
 
-**Clone:**
+### Clone
 
 ```
 git clone git@github.com:levpolevoy/email-scraper.git
 ```
 
-**Start a virtualenv (optional):**
+### Start a virtualenv (optional)
 
 ```
 virtualenv venv
 source venv/bin/activate
 ```
 
-**Install python dependencies:**
+### Install python dependencies
 
 ```
 pip install -r requirements.txt
 ```
 
+### Install and run splash
+
+scrapy-splash in used for executing JavaScript in HTML pages.
+
+Follow the instructions from the
+[splash documentation](http://splash.readthedocs.io/en/stable/install.html)
+
 ## Running
+
+Make sure that *splash* is running in the background.
 
 Quick run:
 ```
 ./find_emails.sh DOMAIN
 ```
 
-More control:
+Run in debug mode:
 ```
 rm -f emails.csv
 scrapy runspider find_emails.py -L DEBUG -o emails.csv -a domain=doc.scrapy.org
@@ -89,7 +98,7 @@ This is a simple exercise so I decided to just do it in one file (find_emails.py
 - [X] Deduplicate the discovered email addresses.
 - [X] Limit the depth of the search to a reasonable number (1-2)
 - [X] Skip non-HTML files
-- [ ] Support JS
+- [X] Support JS
 - [ ] Print emails as soon as they are found (instead of waiting until processing is over).
 
 ## Alternative solutions
@@ -133,24 +142,3 @@ Found via keyword search: *contact scraping*
 * https://www.import.io
 * https://grabby.io
 * http://80legs.com
-
-## Limitations
-
-### No javascript rendering
-
-In the modern web content is often only available after JS was executed.
-
-With regards to this specific script, such content includes:
-- Email addresses
-- Links to other pages
-
-This script doesn't do any complex pre-processing for a page before
-parsing email addresses or links out of it. It only performs an HTTP GET and
-then parses the body of the response.
-
-Executing javascript is orders of magnitude more complex in terms
-of engineering effort, resource requirements and security.
-
-If it's crucial, the [scrapy-splash](https://github.com/scrapy-plugins/scrapy-splash)
-project can be helpful.
-

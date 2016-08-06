@@ -1,6 +1,7 @@
-from scrapy import Spider, Request
+from scrapy import Spider
 from scrapy.linkextractors import LinkExtractor
 from scrapy.exceptions import DropItem
+from scrapy_splash import SplashRequest
 from commonregex import CommonRegex
 
 common_regex_parser = CommonRegex()
@@ -26,7 +27,26 @@ class EmailAddressesSpider(Spider):
         'DEPTH_LIMIT': 1,
         # Ignore files larger than 100KB. They are unlikely to be HTML file.
         'DOWNLOAD_MAXSIZE': 100 * 1024,
-        'ITEM_PIPELINES': {'find_emails.DuplicatesPipeline': 1}
+        'ITEM_PIPELINES': {'find_emails.DuplicatesPipeline': 1},
+
+        # --------------------------------------------------------
+        # Settings that are related to integration with "splash".
+        # We use "splash" to execute JavaScript on HTML pages.
+        #
+        # See more info here: https://github.com/scrapy-plugins/scrapy-splash
+        #
+        'DUPEFILTER_CLASS': 'scrapy_splash.SplashAwareDupeFilter',
+        'DOWNLOADER_MIDDLEWARES': {
+            'scrapy_splash.SplashCookiesMiddleware': 723,
+            'scrapy_splash.SplashMiddleware': 725,
+            'scrapy.downloadermiddlewares.httpcompression.'
+            'HttpCompressionMiddleware': 810,
+        },
+        'SPIDER_MIDDLEWARES': {
+            'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+        },
+        'SPLASH_URL': 'http://localhost:8050'
+        # --------------------------------------------------------
     }
 
     def __init__(self, domain=None):
@@ -34,8 +54,10 @@ class EmailAddressesSpider(Spider):
         if not domain:
             raise ValueError('Must pass a domain')
 
-        self.start_urls = ['http://%s' % domain]
+        self.domain = domain
 
+    @property
+    def allowed_domains(self):
         # In some cases a domain may be passed with a port.
         # Example: "localhost:8000".
         #
@@ -43,8 +65,11 @@ class EmailAddressesSpider(Spider):
         # domain, and it is important to set it correctly in
         # "allowed_domains", otherwise the crawler will skip on pages
         # that it should not skip on.
-        domain_without_optional_port = domain.split(':')[0]
-        self.allowed_domains = [domain_without_optional_port]
+        domain_without_optional_port = self.domain.split(':')[0]
+        return [domain_without_optional_port]
+
+    def start_requests(self):
+        return [SplashRequest('http://%s' % self.domain)]
 
     def parse(self, response):
         # Extract emails from the page text using a regex match
@@ -53,4 +78,4 @@ class EmailAddressesSpider(Spider):
 
         # Find new links to crawl
         for lnk in LinkExtractor().extract_links(response):
-            yield Request(lnk.url)
+            yield SplashRequest(lnk.url)
