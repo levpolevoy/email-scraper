@@ -52,6 +52,16 @@ class TestEmailAddressesSpider(unittest.TestCase):
         self.assertEqual(values[0].url, 'http://google.com/hello.html')
         self.assertEqual(values[1].url, 'http://my.domain/hello')
 
+    def test_should_skip_links_to_images_and_videos(self):
+        values = self.parse_based_on_response_body(
+            '<a href="vid.mp4">vid 1</a>'
+            '<a href="vid.mov?a=b&c=d">vid 2</a> and'
+            '<a href="hello.html">hello</a> and '
+            '<a href="image.jpg">image 1</a> and'
+            '<a href="image.png?a=b&c=d">image 2</a>')
+        self.assertEqual(len(values), 1)
+        self.assertEqual(values[0].url, 'http://google.com/hello.html')
+
     def parse_based_on_response_body(self, body):
         s = EmailAddressesSpider('google.com')
         resp = TextResponse(body=body, url='http://google.com')

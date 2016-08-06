@@ -28,6 +28,7 @@ class EmailAddressesSpider(Spider):
     }
 
     def __init__(self, domain=None):
+        super(Spider, self).__init__()
         if not domain:
             raise ValueError('Must pass a domain')
 
