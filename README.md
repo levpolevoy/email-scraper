@@ -38,16 +38,17 @@ Follow the instructions from the
 
 Make sure that *splash* is running in the background.
 
-Quick run:
+Run:
 ```
 ./find_emails.sh DOMAIN
 ```
 
-Run in debug mode:
+Examples:
+
 ```
-rm -f emails.csv
-scrapy runspider find_emails.py -L DEBUG -o emails.csv -a domain=doc.scrapy.org
-cat emails.csv
+./find_emails.sh mit.edu
+
+./find_emails.sh --debug mit.edu
 ```
 
 ## Testing
