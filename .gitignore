@@ -93,3 +93,6 @@ emails*.csv
 
 # temp vim files
 *.swp
+
+# PyCharm files
+.idea/
