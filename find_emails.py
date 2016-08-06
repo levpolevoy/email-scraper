@@ -23,6 +23,7 @@ class DuplicatesPipeline(object):
 class EmailAddressesSpider(Spider):
     name = 'email-addresses-spider'
     custom_settings = {
+        'DEPTH_LIMIT': 1,
         'ITEM_PIPELINES': {'find_emails.DuplicatesPipeline': 1}
     }
 
