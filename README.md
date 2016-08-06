@@ -87,6 +87,9 @@ This is a simple exercise so I decided to just do it in one file (find_emails.py
 - [X] Crawl all of the discoverable pages.
 - [X] Limit crawling to one domain.
 - [X] Deduplicate the discovered email addresses.
+- [ ] Limit the depth of the search to a reasonable number (1-2)
+- [ ] Skip non-HTML files
+- [ ] Support JS
 - [ ] Print emails as soon as they are found (instead of waiting until processing is over).
 
 ## Alternative solutions
