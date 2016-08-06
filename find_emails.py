@@ -24,6 +24,8 @@ class EmailAddressesSpider(Spider):
     name = 'email-addresses-spider'
     custom_settings = {
         'DEPTH_LIMIT': 1,
+        # Ignore files larger than 100KB. They are unlikely to be HTML file.
+        'DOWNLOAD_MAXSIZE': 100 * 1024,
         'ITEM_PIPELINES': {'find_emails.DuplicatesPipeline': 1}
     }
 
